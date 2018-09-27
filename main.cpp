@@ -13,29 +13,6 @@ using namespace std;
 #include "antsim.h"
 #include "antobj.h"
 
-void saveMatrix(string filename, int** matrix, int rows, int cols) {
-
-	ofstream myfile;
-	myfile.open (filename, ios::out | ios::app | ios::binary);
-
-	cout << "Saving to file: " << filename << endl;
-
-	// Push matrix contents to file in comma separated format
-	for (int i=0; i<rows; ++i) {
-		for (int j=0; j<cols; ++j) {
-			if (j<cols-1) {
-				myfile << matrix[i][j] <<", ";
-			} else {
-				myfile << matrix[i][j];
-			}
-		}
-		myfile << "\n";
-	}
-	myfile << "\n";
-
-	myfile.close();
-}
-
 int main() {
 
 	int nsteps = 300;
@@ -76,7 +53,7 @@ int main() {
 	printMatrix(matrix, m_rows, m_cols);
 
 	// Save initial matrix to file
-	string filename = "testsavefile.txt";
+	string filename = "../testsavefile.txt";
 	ofstream myfile;
 	myfile.open(filename, ios::out | ios::trunc);
 	myfile.close();

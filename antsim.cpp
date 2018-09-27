@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iomanip>
 #include <vector>
+#include <fstream>
 
 #include "antsim.h"
 
@@ -25,6 +26,29 @@ void printMatrix (int** matrix, int rows, int cols) {
 		}
 		cout << endl;
 	}
+}
+
+void saveMatrix(string filename, int** matrix, int rows, int cols) {
+
+	ofstream myfile;
+	myfile.open (filename, ios::out | ios::app | ios::binary);
+
+	cout << "Saving to file: " << filename << endl;
+
+	// Push matrix contents to file in comma separated format
+	for (int i=0; i<rows; ++i) {
+		for (int j=0; j<cols; ++j) {
+			if (j<cols-1) {
+				myfile << matrix[i][j] <<", ";
+			} else {
+				myfile << matrix[i][j];
+			}
+		}
+		myfile << "\n";
+	}
+	myfile << "\n";
+
+	myfile.close();
 }
 
 void populateMatrix (int** matrix, int rows, int cols, int* src, int src_size) {

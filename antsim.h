@@ -18,6 +18,8 @@ int** generateMatrix(int, int);
 
 void printMatrix(int**, int, int);
 
+void saveMatrix(string, int**, int, int);
+
 void populateMatrix(int**, int, int, int*, int);
 
 
