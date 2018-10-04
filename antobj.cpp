@@ -20,8 +20,7 @@ Ant::Ant(){
 
 	Id = totalAnts;
 	Type = 1;
-	Direction = 5;
-	cout << "Output" << endl;
+	Direction = 3;
 	for (int i=0; i<2; ++i) {
 		Location.push_back(0);
 	}

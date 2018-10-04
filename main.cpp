@@ -13,28 +13,57 @@ using namespace std;
 #include "antsim.h"
 #include "antobj.h"
 
+void makeImage(string fname, int** matrix, int rows, int cols) {
+
+	ofstream img;
+	img.open(fname);
+
+	const int width=500, height=500;
+
+	img << "P3" << endl;
+	img << width << " " << height << endl;
+	//img << cols << " " << rows << endl;
+	img << 255 << endl;
+
+	for (int y=0; y<height; ++y) {
+		for (int x=0; x<width; ++x) {
+
+			int i = (x*rows)/height;
+			int j = (y*cols)/width;
+
+			int value = matrix[i][j];
+
+			int r=value*100%255;
+			int g=value*15%255;
+			int b=value*57%255;
+			
+			img << r << " " << g << " " << b << endl;
+		}
+
+	}
+	img.close();
+}
+
 int main() {
 
-	int nsteps = 300;
+	int nsteps = 20;
 
 	// 1) Define matrix
-	int m_rows = 100, m_cols = 100;
+	int m_rows = 20, m_cols = 20;
 	cout << "Defined matrix: " << m_rows << "x" << m_cols << endl;
 
 	// 2) Generate Ants
-	int nants = 100;
-	vector<int> locAll = {40,60};
+	int nants = 30;
+	vector<int> locAll = {10, 10};
 	Ant antarr[nants];
 	cout << "Generated ants: " << nants << endl;
 	for (int i=0; i<nants; ++i) {
 		antarr[i].setType(1);
 		antarr[i].setLocation(locAll);
 	}
-	cout << endl;
 	for (int i=0; i<nants; ++i) {
-		antarr[i].printAntInfo();
+		//antarr[i].printAntInfo();
 	}
-	cout << endl;
 
 	// 3) Generate initial empty matrix
 	int** matrix = generateMatrix(m_rows, m_cols);
@@ -58,6 +87,10 @@ int main() {
 	myfile.open(filename, ios::out | ios::trunc);
 	myfile.close();
 	saveMatrix(filename, matrix, m_rows, m_cols);
+
+	// Prepare ant file
+	string antFilename = "../antfile.csv";
+	prepAntFile(antFilename);
 
 	// 4) Iterate over time steps
 	// random seed
@@ -120,6 +153,10 @@ int main() {
 		//printMatrix(newMatrix, m_rows, m_cols);
 
 		saveMatrix(filename, newMatrix, m_rows, m_cols);
+		saveAnts(antFilename, antarr, t, nants);
+
+		string imageName = "../antresults2/"+to_string(t)+".ppm";
+		makeImage(imageName, newMatrix, m_rows, m_cols);
 
 		// Replace matrix with new matrix
 
